@@ -19,13 +19,13 @@ An example test:
 ```elixir
 defmodule AppWeb.OrderControllerTest do
   use AppWeb.ConnCase
-  
+
   describe "creating" do
     use Radex.Endpoint
-    
+
     @resource "Orders"
     @route {"POST", "/orders"}
-    
+
     @parameter {"location", "Order Location", type: :string}
 
     test "Creating an Order", %{conn: conn} do
@@ -34,7 +34,7 @@ defmodule AppWeb.OrderControllerTest do
         |> post(order_path(conn, :create), %{name: "Cafe"})
         |> record()
 
-      assert conn.status == 201 
+      assert conn.status == 201
     end
   end
 end
