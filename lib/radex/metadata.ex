@@ -41,6 +41,10 @@ defmodule Radex.Metadata do
     GenServer.call(__MODULE__, {:get, key})
   end
 
+  def get_all() do
+    GenServer.call(__MODULE__, :get_all)
+  end
+
   #
   # Server
   #
@@ -52,6 +56,10 @@ defmodule Radex.Metadata do
   def handle_call({:get, key}, _from, state) do
     test = state |> Map.get(key, nil)
     {:reply, test, state}
+  end
+
+  def handle_call(:get_all, _from, state) do
+    {:reply, state, state}
   end
 
   def handle_cast({:record_metadata, key, metadata}, state) do
