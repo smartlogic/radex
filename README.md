@@ -1,21 +1,47 @@
 # Radex
 
-**TODO: Add description**
+A utility to generate documentation for your web API via tests.
 
 ## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `radex` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
   [
-    {:radex, "~> 0.1.0"}
+    {:radex, "~> 0.1.0"},
   ]
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/radex](https://hexdocs.pm/radex).
+## Usage
 
+An example test:
+
+```elixir
+defmodule AppWeb.OrderControllerTest do
+  use AppWeb.ConnCase
+  
+  describe "creating" do
+    use Radex.Endpoint
+    
+    @resource "Orders"
+    @route {"POST", "/orders"}
+    
+    @parameter {"location", "Order Location", type: :string}
+
+    test "Creating an Order", %{conn: conn} do
+      conn =
+        conn
+        |> post(order_path(conn, :create), %{name: "Cafe"})
+        |> record()
+
+      assert conn.status == 201 
+    end
+  end
+end
+```
+
+Record documentation by using the Radex formatter:
+
+```
+mix test --formatter Radex.Formatter
+```
