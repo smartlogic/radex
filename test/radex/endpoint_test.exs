@@ -1,5 +1,5 @@
 defmodule Radex.EndpointTest do
-  use ExUnit.Case
+  use Radex.ConnCase
 
   alias Radex.Endpoint
   alias Radex.Metadata
@@ -28,9 +28,9 @@ defmodule Radex.EndpointTest do
     setup [:prepare_process]
 
     test "saves to the key's metadata", %{key: key} do
-      Endpoint.record(:conn)
+      Endpoint.record(basic_conn())
 
-      assert Metadata.get(key) == %{conns: [:conn]}
+      assert %{conns: [%Radex.Conn{}]} = Metadata.get(key)
     end
 
     # Generate a process key like the macro will do

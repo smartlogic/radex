@@ -3,6 +3,7 @@ defmodule Radex.Writer do
   Write documentation based on the metadata stored
   """
 
+  alias Radex.Writer.Example
   alias Radex.Writer.Index
 
   @doc """
@@ -10,6 +11,7 @@ defmodule Radex.Writer do
   """
   def write!(metadata, path) do
     Index.write(metadata, path)
+    Example.write(metadata, path)
   end
 
   @doc """

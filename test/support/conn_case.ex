@@ -5,6 +5,11 @@ defmodule Radex.ConnCase do
       use Plug.Test
 
       @plug_opts Test.Router.init([])
+
+      def basic_conn() do
+        conn = conn(:post, "/ping")
+        Test.Router.call(conn, @plug_opts)
+      end
     end
   end
 end

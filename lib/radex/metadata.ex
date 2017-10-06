@@ -5,6 +5,8 @@ defmodule Radex.Metadata do
 
   use GenServer
 
+  alias Radex.Conn
+
   @type t :: %{}
 
   @doc false
@@ -80,7 +82,7 @@ defmodule Radex.Metadata do
   def handle_cast({:record_conn, key, conn}, state) do
     test = Map.get(state, key, %{})
     conns = Map.get(test, :conns, [])
-    conns = [conn | conns]
+    conns = [Conn.document(conn) | conns]
     test = Map.put(test, :conns, conns)
 
     {:noreply, Map.put(state, key, test)}
