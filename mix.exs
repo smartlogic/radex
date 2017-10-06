@@ -32,6 +32,8 @@ defmodule Radex.Mixfile do
     [
       {:credo, "~> 0.8", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.17", only: :dev, runtime: false},
+      {:plug, "~> 1.0"},
+      {:poison, "~> 3.1"},
     ]
   end
 end
