@@ -20,16 +20,16 @@ defmodule Radex.Metadata do
   Record metadata about a key
   """
   @spec record_metadata(key :: String.t, metadata :: t) :: :ok
-  def record_metadata(key, metadata) do
-    GenServer.cast(__MODULE__, {:record_metadata, key, metadata})
+  def record_metadata(pid \\ __MODULE__, key, metadata) do
+    GenServer.cast(pid, {:record_metadata, key, metadata})
   end
 
   @doc """
   Record a `Plug.Conn` for a key
   """
   @spec record_conn(key :: String.t, conn :: Plug.Conn.t) :: Plug.Conn.t
-  def record_conn(key, conn) do
-    GenServer.cast(__MODULE__, {:record_conn, key, conn})
+  def record_conn(pid \\ __MODULE__, key, conn) do
+    GenServer.cast(pid, {:record_conn, key, conn})
     conn
   end
 
@@ -37,12 +37,18 @@ defmodule Radex.Metadata do
   Get information about a test by it's key
   """
   @spec get(key :: String.t) :: map
-  def get(key) do
-    GenServer.call(__MODULE__, {:get, key})
+  def get(pid \\ __MODULE__, key) do
+    GenServer.call(pid, {:get, key})
   end
 
-  def get_all() do
-    GenServer.call(__MODULE__, :get_all)
+  @doc """
+  Get all metadata in the process
+
+  For when all tests have completed and documentation will be written
+  """
+  @spec get_all() :: [t]
+  def get_all(pid \\ __MODULE__) do
+    GenServer.call(pid, :get_all)
   end
 
   #

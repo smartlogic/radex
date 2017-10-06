@@ -45,3 +45,12 @@ Record documentation by using the Radex formatter:
 ```
 mix test --formatter Radex.Formatter
 ```
+
+## Configuration
+
+```elixir
+# config/test.exs
+
+config :radex,
+  path: "docs"
+```

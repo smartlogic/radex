@@ -7,6 +7,11 @@ defmodule Radex.Formatter do
 
   use GenServer
 
+  alias Radex.Metadata
+  alias Radex.Writer
+
+  @path Application.get_env(:radex, :path, "docs")
+
   #
   # Server
   #
@@ -18,6 +23,11 @@ defmodule Radex.Formatter do
   def handle_cast(args = {:suite_finished, _run_us, _load_us}, state) do
     IO.puts "\n"
     IO.write "Writing documentation"
+
+    metadata = Metadata.get_all()
+
+    Writer.write!(metadata, @path)
+
     ExUnit.CLIFormatter.handle_cast(args, state)
   end
 
