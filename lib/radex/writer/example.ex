@@ -21,6 +21,6 @@ defmodule Radex.Writer.Example do
   Only use an example if there are 1 or more conns
   """
   def use_example?(example) do
-    length(example.conns) > 0
+    length(example.conns) > 0 && example.success
   end
 end

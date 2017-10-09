@@ -7,10 +7,10 @@ defmodule Radex.Writer.IndexTest do
 
   test "filters out empty examples from metadata" do
     metadata = %{
-      "key1" => %Metadata{},
-      "key2" => %Metadata{conns: [%Conn{}]}
+      "key1" => %Metadata{success: true},
+      "key2" => %Metadata{success: true, conns: [%Conn{}]}
     }
 
-    assert Index.examples(metadata) == [%Metadata{conns: [%Conn{}]}]
+    assert Index.examples(metadata) == [%Metadata{success: true, conns: [%Conn{}]}]
   end
 end

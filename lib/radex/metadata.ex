@@ -7,7 +7,7 @@ defmodule Radex.Metadata do
 
   alias Radex.Conn
 
-  defstruct metadata: %{}, conns: []
+  defstruct file: nil, line: nil, success: false, metadata: %{}, conns: []
 
   @type t :: %__MODULE__{}
 
@@ -19,6 +19,10 @@ defmodule Radex.Metadata do
   #
   # Client
   #
+
+  def register(key, file, line) do
+    GenServer.cast(__MODULE__, {:register, key, file, line})
+  end
 
   @doc """
   Record metadata about a key
@@ -35,6 +39,14 @@ defmodule Radex.Metadata do
   def record_conn(key, conn) do
     GenServer.cast(__MODULE__, {:record_conn, key, conn})
     conn
+  end
+
+  @doc """
+  Record a test as successful
+  """
+  @spec record_success(key :: String.t()) :: :ok
+  def record_success(key) do
+    GenServer.cast(__MODULE__, {:record_success, key})
   end
 
   @doc """
@@ -63,6 +75,15 @@ defmodule Radex.Metadata do
     {:ok, %{}}
   end
 
+  def handle_call({:get, %{file: file, line: line}}, _from, state) do
+    example =
+      Enum.find(state, fn {_key, example} ->
+        example.file == file && example.line == line
+      end)
+
+    {:reply, example, state}
+  end
+
   def handle_call({:get, key}, _from, state) do
     test = state |> Map.get(key, nil)
     {:reply, test, state}
@@ -70,6 +91,15 @@ defmodule Radex.Metadata do
 
   def handle_call(:get_all, _from, state) do
     {:reply, state, state}
+  end
+
+  def handle_cast({:register, key, file, line}, state) do
+    example =
+      state
+      |> Map.get(key, %__MODULE__{})
+      |> Map.merge(%{file: file, line: line})
+
+    {:noreply, Map.put(state, key, example)}
   end
 
   def handle_cast({:record_metadata, key, new_metadata, opts}, state) do
@@ -94,5 +124,14 @@ defmodule Radex.Metadata do
     test = Map.put(test, :conns, conns)
 
     {:noreply, Map.put(state, key, test)}
+  end
+
+  def handle_cast({:record_success, key}, state) do
+    metadata =
+      state
+      |> Map.get(key, %__MODULE__{})
+      |> Map.put(:success, true)
+
+    {:noreply, Map.put(state, key, metadata)}
   end
 end

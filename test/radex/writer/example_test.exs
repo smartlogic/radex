@@ -7,15 +7,20 @@ defmodule Radex.Writer.ExampleTest do
 
   test "filters out empty examples from metadata" do
     metadata = %{
-      "key1" => %Metadata{},
-      "key2" => %Metadata{conns: [%Conn{}]}
+      "key1" => %Metadata{success: true},
+      "key2" => %Metadata{success: true, conns: [%Conn{}]}
     }
 
-    assert Example.examples(metadata) == [%Metadata{conns: [%Conn{}]}]
+    assert Example.examples(metadata) == [%Metadata{success: true, conns: [%Conn{}]}]
   end
 
   test "ignore examples that are missing conns" do
-    assert Example.use_example?(%Metadata{conns: [%Conn{}]})
-    refute Example.use_example?(%Metadata{})
+    assert Example.use_example?(%Metadata{success: true, conns: [%Conn{}]})
+    refute Example.use_example?(%Metadata{success: true, conns: []})
+  end
+
+  test "ignore examples that are not marked as successful" do
+    assert Example.use_example?(%Metadata{conns: [%Conn{}], success: true})
+    refute Example.use_example?(%Metadata{conns: [%Conn{}], success: false})
   end
 end

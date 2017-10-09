@@ -3,6 +3,7 @@ defmodule Radex.WriterTest do
   doctest Radex.Writer
 
   alias Radex.Conn
+  alias Radex.Metadata
   alias Radex.Writer.JSON
 
   setup [:temp_path, :record_metadata]
@@ -79,7 +80,8 @@ defmodule Radex.WriterTest do
     key = Radex.generate_key()
 
     metadata = %{
-      key => %{
+      key => %Metadata{
+        success: true,
         metadata: %{
           resource: "Orders",
           description: "Creating an Order",

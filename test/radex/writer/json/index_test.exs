@@ -8,6 +8,7 @@ defmodule Radex.Writer.JSON.IndexTest do
   test "generating index information" do
     metadata = %{
       Radex.generate_key() => %Metadata{
+        success: true,
         metadata: %{
           resource: "Orders",
           description: "Creating an Order"
@@ -15,6 +16,7 @@ defmodule Radex.Writer.JSON.IndexTest do
         conns: [%Conn{}]
       },
       Radex.generate_key() => %Metadata{
+        success: true,
         metadata: %{
           resource: "Orders",
           description: "Viewing an Order"

@@ -20,6 +20,8 @@ defmodule Radex.Endpoint do
         key = Radex.generate_key()
         Process.put(radex_key(), key)
 
+        Radex.Metadata.register(key, opts.file, opts.line)
+
         on_exit(fn ->
           metadata = %{
             resource: resource(),

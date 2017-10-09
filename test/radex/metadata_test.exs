@@ -40,6 +40,23 @@ defmodule Radex.MetadataTest do
     assert %{conns: [%Radex.Conn{}, %Radex.Conn{}]} = Metadata.get(key)
   end
 
+  test "record a successful example" do
+    key = generate_key()
+
+    Metadata.record_success(key)
+
+    assert Metadata.get(key) == %Metadata{success: true}
+  end
+
+  test "register a key to a file and line number for marking successful" do
+    key = generate_key()
+
+    Metadata.register(key, "file.exs", 10)
+
+    assert Metadata.get(key)
+    assert Metadata.get(%{file: "file.exs", line: 10})
+  end
+
   test "get all from the metadata server" do
     clear_metadata()
 
