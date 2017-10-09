@@ -32,37 +32,37 @@ defmodule Radex.Conn do
 
   Prepares it for writing by fetching all information required from the conn.
   """
-  @spec document(conn :: Plug.Conn.t) :: t()
+  @spec document(conn :: Plug.Conn.t()) :: t()
   def document(conn = %Plug.Conn{}) do
     %__MODULE__{
       request: document_request(conn),
-      response: document_response(conn),
+      response: document_response(conn)
     }
   end
 
   @doc """
   Document the request half of the Conn
   """
-  @spec document_request(conn :: Plug.Conn.t) :: Request.t
+  @spec document_request(conn :: Plug.Conn.t()) :: Request.t()
   def document_request(conn) do
     %Request{
       method: conn.method,
       path: conn.request_path,
       headers: conn.req_headers,
       query_params: conn.query_params,
-      body: Poison.encode!(conn.body_params),
+      body: Poison.encode!(conn.body_params)
     }
   end
 
   @doc """
   Document the response half of the Conn
   """
-  @spec document_response(conn :: Plug.Conn.t) :: Response.t
+  @spec document_response(conn :: Plug.Conn.t()) :: Response.t()
   def document_response(conn) do
     %Response{
       status: conn.status,
       headers: conn.resp_headers,
-      body: conn.resp_body,
+      body: conn.resp_body
     }
   end
 end

@@ -3,7 +3,7 @@ defmodule Radex.Endpoint do
 
   alias Radex.Metadata
 
-  @type route :: {method :: String.t, path :: String.t}
+  @type route :: {method :: String.t(), path :: String.t()}
 
   defmacro __using__(_opts) do
     quote do
@@ -20,12 +20,12 @@ defmodule Radex.Endpoint do
         key = Radex.generate_key()
         Process.put(radex_key(), key)
 
-        on_exit(fn () ->
+        on_exit(fn ->
           Radex.Metadata.record_metadata(key, %{
             resource: resource(),
             description: description(opts),
             route: route(),
-            parameters: parameters(),
+            parameters: parameters()
           })
         end)
 
@@ -63,20 +63,20 @@ defmodule Radex.Endpoint do
     %{test: test}
     |> description()
     |> String.replace_prefix(describe, "")
-    |> String.trim
+    |> String.trim()
   end
+
   def description(%{test: test}) do
     test
     |> to_string()
     |> String.replace_prefix("test ", "")
-    |> String.trim
+    |> String.trim()
   end
-
 
   @doc """
   Record a `Plug.Conn` for the current test process
   """
-  @spec record(conn :: Plug.Conn.t) :: Plug.Conn.t
+  @spec record(conn :: Plug.Conn.t()) :: Plug.Conn.t()
   def record(conn) do
     radex_key()
     |> Process.get()

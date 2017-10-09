@@ -21,7 +21,7 @@ defmodule Radex.Metadata do
   @doc """
   Record metadata about a key
   """
-  @spec record_metadata(key :: String.t, metadata :: t) :: :ok
+  @spec record_metadata(key :: String.t(), metadata :: t) :: :ok
   def record_metadata(pid \\ __MODULE__, key, metadata) do
     GenServer.cast(pid, {:record_metadata, key, metadata})
   end
@@ -29,7 +29,7 @@ defmodule Radex.Metadata do
   @doc """
   Record a `Plug.Conn` for a key
   """
-  @spec record_conn(key :: String.t, conn :: Plug.Conn.t) :: Plug.Conn.t
+  @spec record_conn(key :: String.t(), conn :: Plug.Conn.t()) :: Plug.Conn.t()
   def record_conn(pid \\ __MODULE__, key, conn) do
     GenServer.cast(pid, {:record_conn, key, conn})
     conn
@@ -38,7 +38,7 @@ defmodule Radex.Metadata do
   @doc """
   Get information about a test by it's key
   """
-  @spec get(key :: String.t) :: map
+  @spec get(key :: String.t()) :: map
   def get(pid \\ __MODULE__, key) do
     GenServer.call(pid, {:get, key})
   end

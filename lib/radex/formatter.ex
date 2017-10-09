@@ -21,8 +21,8 @@ defmodule Radex.Formatter do
   end
 
   def handle_cast(args = {:suite_finished, _run_us, _load_us}, state) do
-    IO.puts "\n"
-    IO.write "Writing documentation"
+    IO.puts("\n")
+    IO.write("Writing documentation")
 
     metadata = Metadata.get_all()
 

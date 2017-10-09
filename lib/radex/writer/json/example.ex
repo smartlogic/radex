@@ -10,18 +10,18 @@ defmodule Radex.Writer.JSON.Example do
   @doc """
   Generate and write the example files
   """
-  @spec write(map, Path.t) :: :ok
+  @spec write(map, Path.t()) :: :ok
   @impl Radex.Writer.Example
   def write(metadata, path) do
     metadata
     |> Map.values()
-    |> Enum.each(&(write_example(&1, path)))
+    |> Enum.each(&write_example(&1, path))
   end
 
   @doc """
   Generate and write a single example file
   """
-  @spec write_example(map, Path.t) :: :ok
+  @spec write_example(map, Path.t()) :: :ok
   def write_example(example, path) do
     file = Path.join(path, Writer.example_file_path(example))
     directory = Path.dirname(file)
@@ -34,7 +34,7 @@ defmodule Radex.Writer.JSON.Example do
   @doc """
   Generate an example
   """
-  @spec generate_example(map) :: String.t
+  @spec generate_example(map) :: String.t()
   def generate_example(example) do
     %{
       resource: example.metadata.resource,
@@ -44,9 +44,9 @@ defmodule Radex.Writer.JSON.Example do
       explanation: nil,
       parameters: [],
       response_fields: [],
-      requests: example.conns |> generate_requests(),
+      requests: example.conns |> generate_requests()
     }
-    |> Poison.encode!
+    |> Poison.encode!()
   end
 
   defp route_method(%{route: {method, _}}), do: method
@@ -55,8 +55,9 @@ defmodule Radex.Writer.JSON.Example do
   @doc """
   Generate response map from a Radex.Conn
   """
-  @spec generate_requests([Radex.Conn.t]) :: [map]
+  @spec generate_requests([Radex.Conn.t()]) :: [map]
   def generate_requests([]), do: []
+
   def generate_requests([conn | conns]) do
     request = generate_request(conn)
     [request | generate_requests(conns)]
@@ -65,7 +66,7 @@ defmodule Radex.Writer.JSON.Example do
   @doc """
   Generate a single request map from a Radex.Conn
   """
-  @spec generate_request(Radex.Conn.t) :: map
+  @spec generate_request(Radex.Conn.t()) :: map
   def generate_request(conn) do
     %{
       request_method: conn.request.method,
@@ -75,7 +76,7 @@ defmodule Radex.Writer.JSON.Example do
       request_query_parameters: conn.request.query_params,
       response_status: conn.response.status,
       response_body: conn.response.body,
-      response_headers: conn.response.headers |> generate_headers(),
+      response_headers: conn.response.headers |> generate_headers()
     }
   end
 

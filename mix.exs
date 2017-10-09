@@ -6,13 +6,13 @@ defmodule Radex.Mixfile do
       app: :radex,
       version: "0.1.0",
       elixir: "~> 1.5",
-      elixirc_paths: elixirc_paths(Mix.env),
-      start_permanent: Mix.env == :prod,
+      elixirc_paths: elixirc_paths(Mix.env()),
+      start_permanent: Mix.env() == :prod,
       deps: deps(),
       docs: [
         main: "readme",
-        extras: ["README.md"],
-      ],
+        extras: ["README.md"]
+      ]
     ]
   end
 
@@ -25,7 +25,7 @@ defmodule Radex.Mixfile do
   end
 
   defp elixirc_paths(:test), do: ["lib", "test/support"]
-  defp elixirc_paths(_),     do: ["lib"]
+  defp elixirc_paths(_), do: ["lib"]
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do
@@ -34,7 +34,7 @@ defmodule Radex.Mixfile do
       {:ex_doc, "~> 0.17", only: :dev, runtime: false},
       {:plug, "~> 1.0"},
       {:poison, "~> 3.1"},
-      {:temp, "~> 0.4", only: :test},
+      {:temp, "~> 0.4", only: :test}
     ]
   end
 end

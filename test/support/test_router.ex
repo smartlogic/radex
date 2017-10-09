@@ -1,13 +1,15 @@
 defmodule Test.Router do
   use Plug.Router
 
-  plug Plug.Parsers,
+  plug(
+    Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
     pass: ["*/*"],
     json_decoder: Poison
+  )
 
-  plug :match
-  plug :dispatch
+  plug(:match)
+  plug(:dispatch)
 
   post "/ping" do
     conn
@@ -16,7 +18,7 @@ defmodule Test.Router do
   end
 
   match _ do
-    IO.inspect "oops"
+    IO.inspect("oops")
     send_resp(conn, 404, "oops")
   end
 end

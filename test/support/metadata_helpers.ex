@@ -10,6 +10,6 @@ defmodule Test.MetadataHelpers do
   """
   def clear_metadata() do
     # Replace the internal state to make sure this test passes
-    :sys.replace_state(Metadata, fn (_state) -> %{} end)
+    :sys.replace_state(Metadata, fn _state -> %{} end)
   end
 end

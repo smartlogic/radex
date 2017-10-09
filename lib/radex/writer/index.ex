@@ -3,5 +3,5 @@ defmodule Radex.Writer.Index do
   Behaviour for Index writers
   """
 
-  @callback write(metadata :: map, path :: Path.t) :: :ok
+  @callback write(metadata :: map, path :: Path.t()) :: :ok
 end

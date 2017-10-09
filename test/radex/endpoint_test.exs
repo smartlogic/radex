@@ -8,7 +8,7 @@ defmodule Radex.EndpointTest do
     test "without a describe" do
       opts = %{
         describe: nil,
-        test: "test Creating an Order",
+        test: "test Creating an Order"
       }
 
       assert Endpoint.description(opts) == "Creating an Order"
@@ -17,7 +17,7 @@ defmodule Radex.EndpointTest do
     test "with a describe" do
       opts = %{
         describe: "create an order",
-        test: "test create an order Creating an Order",
+        test: "test create an order Creating an Order"
       }
 
       assert Endpoint.description(opts) == "Creating an Order"
@@ -59,8 +59,8 @@ defmodule Radex.EndpointTest do
 
     test "get the parameters" do
       assert parameters() == [
-        {"name", "Order Name", type: :string},
-      ]
+               {"name", "Order Name", type: :string}
+             ]
     end
   end
 end

@@ -14,19 +14,20 @@ defmodule Radex.WriterTest do
     assert File.exists?(index_file)
 
     {:ok, body} = File.read(index_file)
+
     assert Poison.decode!(body) == %{
-      "resources" => [
-        %{
-          "name" => "Orders",
-          "examples" => [
-            %{
-              "description" => "Creating an Order",
-              "link" => "orders/creating_an_order.json",
-            },
-          ],
-        },
-      ],
-    }
+             "resources" => [
+               %{
+                 "name" => "Orders",
+                 "examples" => [
+                   %{
+                     "description" => "Creating an Order",
+                     "link" => "orders/creating_an_order.json"
+                   }
+                 ]
+               }
+             ]
+           }
   after
     File.rm_rf(path)
   end
@@ -38,34 +39,35 @@ defmodule Radex.WriterTest do
     assert File.exists?(example_file)
 
     {:ok, body} = File.read(example_file)
+
     assert Poison.decode!(body) == %{
-      "resource" => "Orders",
-      "http_method" => "POST",
-      "route" => "/orders",
-      "description" => "Creating an Order",
-      "explanation" => nil,
-      "parameters" => [],
-      "response_fields" => [],
-      "requests" => [
-        %{
-          "request_method" => "POST",
-          "request_path" => "/orders",
-          "request_body" => "{}",
-          "request_headers" => %{"content-type" => "application/json"},
-          "request_query_parameters" => %{},
-          "response_status" => 201,
-          "response_body" => "order body",
-          "response_headers" => %{"content-type" => "application/json"},
-        },
-      ],
-    }
+             "resource" => "Orders",
+             "http_method" => "POST",
+             "route" => "/orders",
+             "description" => "Creating an Order",
+             "explanation" => nil,
+             "parameters" => [],
+             "response_fields" => [],
+             "requests" => [
+               %{
+                 "request_method" => "POST",
+                 "request_path" => "/orders",
+                 "request_body" => "{}",
+                 "request_headers" => %{"content-type" => "application/json"},
+                 "request_query_parameters" => %{},
+                 "response_status" => 201,
+                 "response_body" => "order body",
+                 "response_headers" => %{"content-type" => "application/json"}
+               }
+             ]
+           }
   after
     File.rm_rf(path)
   end
 
   # Generate a temp path to work in
   def temp_path(_) do
-    {:ok, path} = Temp.mkdir "radex"
+    {:ok, path} = Temp.mkdir("radex")
     %{path: path}
   end
 
@@ -78,7 +80,7 @@ defmodule Radex.WriterTest do
         metadata: %{
           resource: "Orders",
           description: "Creating an Order",
-          route: {"POST", "/orders"},
+          route: {"POST", "/orders"}
         },
         conns: [
           %Conn{
@@ -87,16 +89,16 @@ defmodule Radex.WriterTest do
               path: "/orders",
               headers: [{"content-type", "application/json"}],
               query_params: %{},
-              body: "{}",
+              body: "{}"
             },
             response: %Conn.Response{
               status: 201,
               headers: [{"content-type", "application/json"}],
-              body: "order body",
-            },
-          },
-        ],
-      },
+              body: "order body"
+            }
+          }
+        ]
+      }
     }
 
     %{key: key, metadata: metadata}

@@ -20,9 +20,9 @@ defmodule Radex.ConnTest do
 
     test "request headers", %{example: example} do
       assert example.request.headers == [
-        {"accept", "application/json"},
-        {"content-type", "application/json"},
-      ]
+               {"accept", "application/json"},
+               {"content-type", "application/json"}
+             ]
     end
 
     test "request body", %{example: example} do
@@ -35,17 +35,18 @@ defmodule Radex.ConnTest do
 
     test "response headers", %{example: example} do
       assert example.response.headers == [
-        {"cache-control", "max-age=0, private, must-revalidate"},
-        {"content-type", "application/json"},
-      ]
+               {"cache-control", "max-age=0, private, must-revalidate"},
+               {"content-type", "application/json"}
+             ]
     end
 
     test "response body", %{example: example} do
-      assert example.response.body == %{ping: "pong"} |> Poison.encode!
+      assert example.response.body == %{ping: "pong"} |> Poison.encode!()
     end
 
     def document_conn(_) do
       body = Poison.encode!(%{body: "param"})
+
       conn =
         :post
         |> conn("/ping?query=param", body)

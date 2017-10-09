@@ -3,5 +3,5 @@ defmodule Radex.Writer.Example do
   Behaviour for example writers
   """
 
-  @callback write(metadata :: map, path :: Path.t) :: :ok
+  @callback write(metadata :: map, path :: Path.t()) :: :ok
 end

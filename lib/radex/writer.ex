@@ -21,9 +21,10 @@ defmodule Radex.Writer do
       iex> Radex.Writer.example_file_path(example)
       "orders/creating_an_order.json"
   """
-  @spec example_file_path(map) :: String.t
+  @spec example_file_path(map) :: String.t()
   def example_file_path(example) do
     folder = String.downcase(example.metadata.resource)
+
     file =
       example.metadata.description
       |> String.downcase()
