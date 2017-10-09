@@ -24,6 +24,16 @@ defmodule Radex.EndpointTest do
     end
   end
 
+  describe "updating metadata" do
+    setup [:prepare_process]
+
+    test "from a test", %{key: key} do
+      Endpoint.radex_metadata(%{description: "Creating an order"})
+
+      assert Metadata.get(key).metadata.description == "Creating an order"
+    end
+  end
+
   describe "recording conns" do
     setup [:prepare_process]
 
@@ -31,13 +41,6 @@ defmodule Radex.EndpointTest do
       Endpoint.record(basic_conn())
 
       assert %{conns: [%Radex.Conn{}]} = Metadata.get(key)
-    end
-
-    # Generate a process key like the macro will do
-    def prepare_process(_) do
-      key = Radex.generate_key()
-      Process.put(Endpoint.radex_key(), key)
-      %{key: key}
     end
   end
 
@@ -62,5 +65,11 @@ defmodule Radex.EndpointTest do
                {"name", "Order Name", type: :string}
              ]
     end
+  end
+
+  def prepare_process(_) do
+    key = Radex.generate_key()
+    Process.put(Endpoint.radex_key(), key)
+    %{key: key}
   end
 end

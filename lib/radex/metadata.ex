@@ -24,16 +24,16 @@ defmodule Radex.Metadata do
   Record metadata about a key
   """
   @spec record_metadata(key :: String.t(), metadata :: t) :: :ok
-  def record_metadata(pid \\ __MODULE__, key, metadata) do
-    GenServer.cast(pid, {:record_metadata, key, metadata})
+  def record_metadata(key, metadata, opts \\ []) do
+    GenServer.cast(__MODULE__, {:record_metadata, key, metadata, opts})
   end
 
   @doc """
   Record a `Plug.Conn` for a key
   """
   @spec record_conn(key :: String.t(), conn :: Plug.Conn.t()) :: Plug.Conn.t()
-  def record_conn(pid \\ __MODULE__, key, conn) do
-    GenServer.cast(pid, {:record_conn, key, conn})
+  def record_conn(key, conn) do
+    GenServer.cast(__MODULE__, {:record_conn, key, conn})
     conn
   end
 
@@ -41,8 +41,8 @@ defmodule Radex.Metadata do
   Get information about a test by it's key
   """
   @spec get(key :: String.t()) :: map
-  def get(pid \\ __MODULE__, key) do
-    GenServer.call(pid, {:get, key})
+  def get(key) do
+    GenServer.call(__MODULE__, {:get, key})
   end
 
   @doc """
@@ -51,8 +51,8 @@ defmodule Radex.Metadata do
   For when all tests have completed and documentation will be written
   """
   @spec get_all() :: [t]
-  def get_all(pid \\ __MODULE__) do
-    GenServer.call(pid, :get_all)
+  def get_all() do
+    GenServer.call(__MODULE__, :get_all)
   end
 
   #
@@ -72,13 +72,19 @@ defmodule Radex.Metadata do
     {:reply, state, state}
   end
 
-  def handle_cast({:record_metadata, key, metadata}, state) do
-    test =
-      state
-      |> Map.get(key, %__MODULE__{})
-      |> Map.put(:metadata, metadata)
+  def handle_cast({:record_metadata, key, new_metadata, opts}, state) do
+    example = Map.get(state, key, %__MODULE__{})
+    metadata = Map.get(example, :metadata, %{})
 
-    {:noreply, Map.put(state, key, test)}
+    metadata =
+      case Keyword.get(opts, :overwrite, true) do
+        true -> Map.merge(metadata, new_metadata)
+        false -> Map.merge(new_metadata, metadata)
+      end
+
+    example = Map.put(example, :metadata, metadata)
+
+    {:noreply, Map.put(state, key, example)}
   end
 
   def handle_cast({:record_conn, key, conn}, state) do

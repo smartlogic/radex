@@ -13,6 +13,24 @@ defmodule Radex.MetadataTest do
     assert Metadata.get(key) == %Metadata{metadata: %{resource: "A Resource"}}
   end
 
+  test "records metadata for a key twice - merging the second time" do
+    key = generate_key()
+    Metadata.record_metadata(key, %{resource: "A Resource"})
+    Metadata.record_metadata(key, %{description: "Creating a resource"})
+
+    assert Metadata.get(key) == %Metadata{
+             metadata: %{resource: "A Resource", description: "Creating a resource"}
+           }
+  end
+
+  test "records metadata for a key twice - disable overwrite for a second call" do
+    key = generate_key()
+    Metadata.record_metadata(key, %{description: "Creating a resource"})
+    Metadata.record_metadata(key, %{description: "renders without error"}, overwrite: false)
+
+    assert Metadata.get(key) == %Metadata{metadata: %{description: "Creating a resource"}}
+  end
+
   test "records a conn" do
     key = generate_key()
 

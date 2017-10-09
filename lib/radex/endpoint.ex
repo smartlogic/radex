@@ -21,12 +21,14 @@ defmodule Radex.Endpoint do
         Process.put(radex_key(), key)
 
         on_exit(fn ->
-          Radex.Metadata.record_metadata(key, %{
+          metadata = %{
             resource: resource(),
             description: description(opts),
             route: route(),
             parameters: parameters()
-          })
+          }
+
+          Radex.Metadata.record_metadata(key, metadata, overwrite: false)
         end)
 
         :ok
@@ -81,5 +83,15 @@ defmodule Radex.Endpoint do
     radex_key()
     |> Process.get()
     |> Metadata.record_conn(conn)
+  end
+
+  @doc """
+  Alter the metadata for the example
+  """
+  @spec radex_metadata(metadata :: map) :: :ok
+  def radex_metadata(metadata) do
+    radex_key()
+    |> Process.get()
+    |> Metadata.record_metadata(Enum.into(metadata, %{}))
   end
 end
