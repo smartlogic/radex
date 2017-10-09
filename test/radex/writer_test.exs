@@ -5,6 +5,8 @@ defmodule Radex.WriterTest do
   alias Radex.Conn
   alias Radex.Writer.JSON
 
+  doctest Radex.Writer.JSON.Example
+
   setup [:temp_path, :record_metadata]
 
   test "writes the index", %{path: path, metadata: metadata} do
@@ -46,18 +48,21 @@ defmodule Radex.WriterTest do
              "route" => "/orders",
              "description" => "Creating an Order",
              "explanation" => nil,
-             "parameters" => [],
+             "parameters" => [
+               %{"name" => "email", "description" => "The order's email address"},
+               %{"name" => "name", "description" => "A name for the order", "type" => "string"}
+             ],
              "response_fields" => [],
              "requests" => [
                %{
                  "request_method" => "POST",
                  "request_path" => "/orders",
                  "request_body" => "{}",
-                 "request_headers" => %{"content-type" => "application/json"},
+                 "request_headers" => %{"Content-Type" => "application/json"},
                  "request_query_parameters" => %{},
                  "response_status" => 201,
                  "response_body" => "order body",
-                 "response_headers" => %{"content-type" => "application/json"}
+                 "response_headers" => %{"Content-Type" => "application/json"}
                }
              ]
            }
@@ -80,7 +85,11 @@ defmodule Radex.WriterTest do
         metadata: %{
           resource: "Orders",
           description: "Creating an Order",
-          route: {"POST", "/orders"}
+          route: {"POST", "/orders"},
+          parameters: [
+            {"email", "The order's email address"},
+            {"name", "A name for the order", type: :string}
+          ]
         },
         conns: [
           %Conn{

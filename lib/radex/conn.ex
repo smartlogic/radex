@@ -50,9 +50,12 @@ defmodule Radex.Conn do
       path: conn.request_path,
       headers: conn.req_headers,
       query_params: conn.query_params,
-      body: Poison.encode!(conn.body_params)
+      body: request_body(conn.body_params)
     }
   end
+
+  defp request_body(body) when body == %{}, do: nil
+  defp request_body(body), do: Poison.encode!(body)
 
   @doc """
   Document the response half of the Conn

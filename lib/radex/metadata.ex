@@ -7,7 +7,9 @@ defmodule Radex.Metadata do
 
   alias Radex.Conn
 
-  @type t :: %{}
+  defstruct metadata: %{}, conns: []
+
+  @type t :: %__MODULE__{}
 
   @doc false
   def start_link(_) do
@@ -73,16 +75,16 @@ defmodule Radex.Metadata do
   def handle_cast({:record_metadata, key, metadata}, state) do
     test =
       state
-      |> Map.get(key, %{})
+      |> Map.get(key, %__MODULE__{})
       |> Map.put(:metadata, metadata)
 
     {:noreply, Map.put(state, key, test)}
   end
 
   def handle_cast({:record_conn, key, conn}, state) do
-    test = Map.get(state, key, %{})
+    test = Map.get(state, key, %__MODULE__{})
     conns = Map.get(test, :conns, [])
-    conns = [Conn.document(conn) | conns]
+    conns = conns ++ [Conn.document(conn)]
     test = Map.put(test, :conns, conns)
 
     {:noreply, Map.put(state, key, test)}

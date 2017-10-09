@@ -42,7 +42,7 @@ defmodule Radex.Writer.JSON.Example do
       route: example.metadata |> route_path(),
       description: example.metadata.description,
       explanation: nil,
-      parameters: [],
+      parameters: example.metadata.parameters |> generate_parameters(),
       response_fields: [],
       requests: example.conns |> generate_requests()
     }
@@ -51,6 +51,39 @@ defmodule Radex.Writer.JSON.Example do
 
   defp route_method(%{route: {method, _}}), do: method
   defp route_path(%{route: {_, path}}), do: path
+
+  @doc """
+  Generate parameters from the metadata
+
+      iex> JSON.Example.generate_parameters([{"name", "description"}])
+      [%{name: "name", description: "description"}]
+  """
+  def generate_parameters([]), do: []
+
+  def generate_parameters([parameter | parameters]) do
+    parameter = generate_parameter(parameter)
+    [parameter | generate_parameters(parameters)]
+  end
+
+  @doc """
+  Generate a single paramter
+
+      iex> JSON.Example.generate_parameter({"name", "description"})
+      %{name: "name", description: "description"}
+
+      iex> JSON.Example.generate_parameter({"name", "description", extra: :keys})
+      %{name: "name", description: "description", extra: :keys}
+  """
+  def generate_parameter({name, description}) do
+    %{
+      name: name,
+      description: description
+    }
+  end
+
+  def generate_parameter({name, description, extras}) do
+    Map.merge(generate_parameter({name, description}), Enum.into(extras, %{}))
+  end
 
   @doc """
   Generate response map from a Radex.Conn
@@ -80,8 +113,25 @@ defmodule Radex.Writer.JSON.Example do
     }
   end
 
-  defp generate_headers(headers) do
+  @doc """
+  Generates a map of headers
+
+      iex> JSON.Example.generate_headers([{"content-type", "application/json"}, {"accept", "application/json"}])
+      %{"Content-Type" => "application/json", "Accept" => "application/json"}
+  """
+  def generate_headers(headers) do
     headers
+    |> Enum.map(&generate_header/1)
     |> Enum.into(%{})
+  end
+
+  def generate_header({header, value}) do
+    header =
+      header
+      |> String.split("-")
+      |> Enum.map(&String.capitalize/1)
+      |> Enum.join("-")
+
+    {header, value}
   end
 end

@@ -10,7 +10,7 @@ defmodule Radex.MetadataTest do
     key = generate_key()
     Metadata.record_metadata(key, %{resource: "A Resource"})
 
-    assert Metadata.get(key) == %{metadata: %{resource: "A Resource"}}
+    assert Metadata.get(key) == %Metadata{metadata: %{resource: "A Resource"}}
   end
 
   test "records a conn" do

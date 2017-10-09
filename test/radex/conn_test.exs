@@ -44,6 +44,18 @@ defmodule Radex.ConnTest do
       assert example.response.body == %{ping: "pong"} |> Poison.encode!()
     end
 
+    test "an empty body for a request is not {}" do
+      conn =
+        :post
+        |> conn("/ping")
+        |> put_req_header("accept", "application/json")
+
+      conn = Test.Router.call(conn, @plug_opts)
+      example = Conn.document(conn)
+
+      assert example.request.body == nil
+    end
+
     def document_conn(_) do
       body = Poison.encode!(%{body: "param"})
 
