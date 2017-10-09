@@ -3,8 +3,8 @@ defmodule Radex.Writer do
   Write documentation based on the metadata stored
   """
 
-  alias Radex.Writer.Example
-  alias Radex.Writer.Index
+  alias Radex.Writer.JSON.Example
+  alias Radex.Writer.JSON.Index
 
   @doc """
   Generate the index and all example files

@@ -3,12 +3,12 @@ defmodule Radex.WriterTest do
   doctest Radex.Writer
 
   alias Radex.Conn
-  alias Radex.Writer
+  alias Radex.Writer.JSON
 
   setup [:temp_path, :record_metadata]
 
   test "writes the index", %{path: path, metadata: metadata} do
-    Writer.Index.write(metadata, path)
+    JSON.Index.write(metadata, path)
 
     index_file = Path.join(path, "index.json")
     assert File.exists?(index_file)
@@ -32,7 +32,7 @@ defmodule Radex.WriterTest do
   end
 
   test "writes examples", %{path: path, metadata: metadata} do
-    Writer.Example.write(metadata, path)
+    JSON.Example.write(metadata, path)
 
     example_file = Path.join(path, "orders/creating_an_order.json")
     assert File.exists?(example_file)
