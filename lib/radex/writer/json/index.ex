@@ -39,7 +39,7 @@ defmodule Radex.Writer.JSON.Index do
   def generate_sections({resource_name, examples}, map) do
     resource = %{
       name: resource_name,
-      examples: examples |> Enum.map(&index_example/1)
+      examples: examples |> Enum.map(&index_example/1) |> Enum.sort_by(& &1.description)
     }
 
     resources = [resource | map.resources]

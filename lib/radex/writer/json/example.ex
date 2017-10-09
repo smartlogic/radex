@@ -55,7 +55,7 @@ defmodule Radex.Writer.JSON.Example do
   @doc """
   Generate parameters from the metadata
 
-      iex> JSON.Example.generate_parameters([{"name", "description"}])
+      iex> Example.generate_parameters([{"name", "description"}])
       [%{name: "name", description: "description"}]
   """
   def generate_parameters([]), do: []
@@ -68,10 +68,10 @@ defmodule Radex.Writer.JSON.Example do
   @doc """
   Generate a single paramter
 
-      iex> JSON.Example.generate_parameter({"name", "description"})
+      iex> Example.generate_parameter({"name", "description"})
       %{name: "name", description: "description"}
 
-      iex> JSON.Example.generate_parameter({"name", "description", extra: :keys})
+      iex> Example.generate_parameter({"name", "description", extra: :keys})
       %{name: "name", description: "description", extra: :keys}
   """
   def generate_parameter({name, description}) do
@@ -116,7 +116,7 @@ defmodule Radex.Writer.JSON.Example do
   @doc """
   Generates a map of headers
 
-      iex> JSON.Example.generate_headers([{"content-type", "application/json"}, {"accept", "application/json"}])
+      iex> Example.generate_headers([{"content-type", "application/json"}, {"accept", "application/json"}])
       %{"Content-Type" => "application/json", "Accept" => "application/json"}
   """
   def generate_headers(headers) do
@@ -125,6 +125,12 @@ defmodule Radex.Writer.JSON.Example do
     |> Enum.into(%{})
   end
 
+  @doc """
+  Generate a header from a Conn tuple
+
+  Will properly capitalize the header
+  """
+  @spec generate_header({header :: String.t(), value :: String.t()}) :: {String.t(), String.t()}
   def generate_header({header, value}) do
     header =
       header

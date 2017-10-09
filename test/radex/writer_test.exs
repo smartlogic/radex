@@ -5,8 +5,6 @@ defmodule Radex.WriterTest do
   alias Radex.Conn
   alias Radex.Writer.JSON
 
-  doctest Radex.Writer.JSON.Example
-
   setup [:temp_path, :record_metadata]
 
   test "writes the index", %{path: path, metadata: metadata} do
