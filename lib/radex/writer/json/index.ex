@@ -4,8 +4,9 @@ defmodule Radex.Writer.JSON.Index do
   """
 
   alias Radex.Writer
+  alias Radex.Writer.Index
 
-  @behaviour Radex.Writer.Index
+  @behaviour Index
 
   @doc """
   Write the index
@@ -26,7 +27,7 @@ defmodule Radex.Writer.JSON.Index do
   @spec generate_index(map) :: String.t()
   def generate_index(metadata) do
     metadata
-    |> Enum.map(&elem(&1, 1))
+    |> Index.examples()
     |> Enum.group_by(& &1.metadata.resource)
     |> Enum.reduce(%{resources: []}, &generate_sections/2)
     |> Poison.encode!()

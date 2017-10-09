@@ -4,4 +4,6 @@ defmodule Radex.Writer.Index do
   """
 
   @callback write(metadata :: map, path :: Path.t()) :: :ok
+
+  defdelegate examples(metadata), to: Radex.Writer.Example
 end

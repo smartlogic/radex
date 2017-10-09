@@ -1,21 +1,25 @@
 defmodule Radex.Writer.JSON.IndexTest do
   use ExUnit.Case
 
+  alias Radex.Conn
+  alias Radex.Metadata
   alias Radex.Writer.JSON.Index
 
   test "generating index information" do
     metadata = %{
-      Radex.generate_key() => %{
+      Radex.generate_key() => %Metadata{
         metadata: %{
           resource: "Orders",
           description: "Creating an Order"
-        }
+        },
+        conns: [%Conn{}]
       },
-      Radex.generate_key() => %{
+      Radex.generate_key() => %Metadata{
         metadata: %{
           resource: "Orders",
           description: "Viewing an Order"
-        }
+        },
+        conns: [%Conn{}]
       }
     }
 

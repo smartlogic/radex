@@ -4,8 +4,9 @@ defmodule Radex.Writer.JSON.Example do
   """
 
   alias Radex.Writer
+  alias Radex.Writer.Example
 
-  @behaviour Radex.Writer.Example
+  @behaviour Example
 
   @doc """
   Generate and write the example files
@@ -14,7 +15,7 @@ defmodule Radex.Writer.JSON.Example do
   @impl Radex.Writer.Example
   def write(metadata, path) do
     metadata
-    |> Map.values()
+    |> Example.examples()
     |> Enum.each(&write_example(&1, path))
   end
 
