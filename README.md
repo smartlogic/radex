@@ -1,5 +1,7 @@
 # Radex
 
+[![Build Status](https://travis-ci.org/smartlogic/radex.svg?branch=master)](https://travis-ci.org/smartlogic/radex)
+
 A utility to generate documentation for your web API via tests.
 
 ## Installation
