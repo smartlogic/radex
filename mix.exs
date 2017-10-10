@@ -12,7 +12,10 @@ defmodule Radex.Mixfile do
       docs: [
         main: "readme",
         extras: ["README.md"]
-      ]
+      ],
+      description: description(),
+      package: package(),
+      source_url: "https://github.com/smartlogic/radex"
     ]
   end
 
@@ -35,6 +38,18 @@ defmodule Radex.Mixfile do
       {:plug, "~> 1.0"},
       {:poison, "~> 3.1"},
       {:temp, "~> 0.4", only: :test}
+    ]
+  end
+
+  def description() do
+    "Generate API documentation based on your tests."
+  end
+
+  def package() do
+    [
+      maintainers: ["Eric Oestrich"],
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/smartlogic/radex"}
     ]
   end
 end
