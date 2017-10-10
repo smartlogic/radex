@@ -7,9 +7,19 @@ A utility to generate documentation for your web API via tests.
 ## Installation
 
 ```elixir
-def deps do
+# mix.exs
+
+defp deps do
   [
     {:radex, "~> 0.1.0"},
+  ]
+end
+
+# You can also set up an alias for the formatter
+# This must be run with MIX_ENV=test explicitly declared
+defp aliases do
+  [
+    "radex.test": ["test --formatter Radex.Formatter"],
   ]
 end
 ```
@@ -46,6 +56,7 @@ Record documentation by using the Radex formatter:
 
 ```
 mix test --formatter Radex.Formatter
+MIX_ENV=test mix radex.test
 ```
 
 ## Configuration
