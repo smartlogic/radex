@@ -11,7 +11,7 @@ A utility to generate documentation for your web API via tests.
 
 defp deps do
   [
-    {:radex, "~> 0.1.0"},
+    {:radex, "~> 0.1.0", only: :test},
   ]
 end
 
